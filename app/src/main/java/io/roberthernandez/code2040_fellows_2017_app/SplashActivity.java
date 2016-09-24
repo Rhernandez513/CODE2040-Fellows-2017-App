@@ -1,4 +1,4 @@
-package io.roberthernandez.code2040_fellows_2017_application;
+package io.roberthernandez.code2040_fellows_2017_app;
 
 import io.roberthernandez.code2040_fellows_2017_app.MainActivity;
 import android.content.Intent;

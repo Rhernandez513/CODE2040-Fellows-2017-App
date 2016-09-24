@@ -1,3 +1,4 @@
 <resources>
     <string name="app_name">CODE2040-Fellows-2017-App</string>
+    <string name="submit_post">Click here to submit POST</string>
 </resources>
