@@ -13,8 +13,7 @@ import java.util.ArrayList;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<String> URLS = new ArrayList<String>();
-    private Button btnOne, btnTwo;
-    private json_blob blob;
+    private Button btnOne, btnTwo, btnThree;
     private static Gson gson;
 
     @Override
@@ -28,18 +27,21 @@ public class MainActivity extends AppCompatActivity {
 
         gson = new Gson();
 
-        blob  = new json_blob(
-                getResources().getString(R.string.token_value),
-                getResources().getString(R.string.github_url));
 
-        final String register_payload = gson.toJson(blob);
 
         btnOne.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+
                 String response = "";
+                json_blob blob  = new json_blob(
+                        getResources().getString(R.string.token_value),
+                        getResources().getString(R.string.github_url));
+
+                final String register_payload = gson.toJson(blob);
+
                 try {
-                    response = makeHttpPostRequest(URLS.get(1), register_payload);
+                    response = makeHttpPostRequest(URLS.get(0), register_payload);
                 } catch (Exception e) {
                     System.err.print(e.getMessage());
                 }
@@ -47,14 +49,14 @@ public class MainActivity extends AppCompatActivity {
             }
         });
 
-        blob  = new json_blob(getResources().getString(R.string.token_value));
-
-        final String token_only = gson.toJson(blob);
-
         btnTwo.setOnClickListener(new View.OnClickListener() {
-            String response = "";
             @Override
             public void onClick(View view) {
+
+                String response = "";
+                json_blob blob  = new json_blob(getResources().getString(R.string.token_value));
+                final String token_only = gson.toJson(blob);
+
                 try {
                     response = makeHttpPostRequest(URLS.get(1), token_only);
                     updateResponseBox(response);
@@ -74,13 +76,42 @@ public class MainActivity extends AppCompatActivity {
                 updateResponseBox(response);
             }
         });
+
+
+        btnThree.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String response = "";
+                json_blob blob  = new json_blob(getResources().getString(R.string.token_value));
+                final String token_only = gson.toJson(blob);
+
+                try {
+                    response = makeHttpPostRequest(URLS.get(3), token_only);
+                    updateResponseBox(response);
+
+                    // TODO Add actual logic to find the needle in the array by converting JSON to POJO, searching, then back to JSON
+
+                    // Send back reversed string to validation endpoint
+                    response = makeHttpPostRequest(URLS.get(4), gson.toJson(blob));
+
+                } catch (Exception e) {
+                    System.err.print(e.getMessage());
+                }
+                updateResponseBox(response);
+            }
+        });
     }
 
     public void populateURLList(ArrayList<String> list) {
+        // Used for testing only
+        // list.add("http://posttestserver.com/post.php");
+
         list.add(getResources().getString(R.string.register_api_endpoint));
         list.add(getResources().getString(R.string.reverse_api_endpoint));
-//        list.add("http://posttestserver.com/post.php");
-        list.add(getResources().getString(R.string.validate_api_endpoint));
+        list.add(getResources().getString(R.string.reverse_validate_api_endpoint));
+        list.add(getResources().getString(R.string.haystack_api_endpoint));
+        list.add(getResources().getString(R.string.haystack_validate_api_endpoint));
     }
 
     public String makeHttpPostRequest(String endPoint, String json) throws IOException {
