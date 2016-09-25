@@ -21,8 +21,7 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-//        API_ENDPOINT_URL = getResources().getString(R.string.register_api_endpoint);
-        API_ENDPOINT_URL =  "http://posttestserver.com/post.php";
+        API_ENDPOINT_URL = getResources().getString(R.string.register_api_endpoint);
         btnOne = (Button) findViewById(R.id.btnOne);
 
         gson = new Gson();
