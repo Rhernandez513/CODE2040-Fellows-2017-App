@@ -6,10 +6,13 @@ package io.roberthernandez.code2040_fellows_2017_app;
 
 public class json_blob {
     private String token;
-    private String github;
+    private String string;  // Arbitrary field name according to what the API endpoint expects
 
-    public json_blob(String token_value, String github_url) {
+    public json_blob(String token_value, String string) {
         this.token = token_value;
-        this.github = github_url;
+        this.string = string;
+    }
+    public json_blob(String token_value) {
+        this.token = token_value;
     }
 }
