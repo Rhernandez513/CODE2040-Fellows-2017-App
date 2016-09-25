@@ -16,7 +16,11 @@ import okhttp3.Response;
 
 public class HttpPostHandler extends AsyncTask<String, Void, String>{
 
-    public String responseCode = "";
+    private static String responseCode = "";
+
+    public String getResponseCode() {
+        return this.responseCode;
+    }
 
     public static final MediaType JSON = MediaType.parse("application/json; charset=utf-8");
 
@@ -38,23 +42,22 @@ public class HttpPostHandler extends AsyncTask<String, Void, String>{
         String result = "";
         try {
             result = post(params[0], params[1]);
-            Thread.sleep(5000);
         } catch (Exception e) {
             e.printStackTrace();
         }
+        this.responseCode = result;
+
+        // I know I'm not actually using the result but for some reason I couldn't access the
+        // returned data member from the UI thread
+        // using a field is inelegant, but it works
         return result;
     }
 
     @Override
-    protected void onPostExecute(String result) {
-        responseCode = result;
-        super.onPostExecute(result);
-    }
+    protected void onPostExecute(String result) { }
 
     @Override
-    protected void onPreExecute() {
-        super.onPreExecute();
-    }
+    protected void onPreExecute() { super.onPreExecute(); }
 
     @Override
     protected void onProgressUpdate(Void... values) { }

@@ -45,14 +45,13 @@ public class MainActivity extends AppCompatActivity {
     public void makeHttpPostRequest(String endPoint, String json) throws IOException {
 
         HttpPostHandler handler = new HttpPostHandler();
-        Object obj = handler.execute(endPoint, json);
+        handler.execute(endPoint, json);
 
-        final String response = handler.responseCode;
+        // wait for potential network lag
+        try { Thread.sleep(1000); } catch (Exception e){ e.printStackTrace(); }
 
-        // Testing only
-        System.out.println(response);
-        System.err.println(response);
-        //
+        final String response = handler.getResponseCode();
+
         updateResponseBox(response);
     }
     public void updateResponseBox(String response) {
