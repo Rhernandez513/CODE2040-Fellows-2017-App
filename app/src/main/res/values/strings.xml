@@ -1,9 +1,7 @@
 <resources>
     <string name="app_name">CODE2040-Fellows-2017-Application</string>
     <string name="register_api_endpoint">http://challenge.code2040.org/api/register</string>
-    <string name="github">github</string>
     <string name="github_url">https://github.com/Rhernandez513/CODE2040-Fellows-2017-App</string>
-    <string name="token">token</string>
     <string name="token_value">d3b566dd91946d8a596e67474cb41aac</string>
     <string name="submit_post">Click to Submit POST</string>
     <string name="post_placeholder">POST not yet submitted</string>
