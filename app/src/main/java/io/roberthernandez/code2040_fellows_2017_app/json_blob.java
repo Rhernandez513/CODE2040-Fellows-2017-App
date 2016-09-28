@@ -11,7 +11,7 @@ public class json_blob {
     // Arbitrary field names according to what the API endpoint expects
     private String token;
     private String needleToSearchFor;
-    private ArrayList<String> string_array;
+    private ArrayList<String> array;
     private int needle;
 
     public String getToken () {
@@ -22,14 +22,14 @@ public class json_blob {
         return this.needleToSearchFor;
     }
 
-    public ArrayList<String> getString_Array() { return this.string_array; }
+    public ArrayList<String> getString_Array() { return this.array; }
 
     // Gson Best practices
     public json_blob() { }
 
-    public json_blob(String string, ArrayList<String> string_array) {
-        this.needleToSearchFor = string;
-        this.string_array = string_array;
+    public json_blob(String string, ArrayList<String> array) {
+        this.token = string;
+        this.array = array;
     }
 
     public json_blob(String token, int location) {

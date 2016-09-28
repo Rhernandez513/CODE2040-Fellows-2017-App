@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<String> URLS = new ArrayList<String>();
-    private Button btnOne, btnTwo, btnThree;
+    private Button btnOne, btnTwo, btnThree, btnFour;
     private static Gson gson;
 
     @Override
@@ -29,6 +29,7 @@ public class MainActivity extends AppCompatActivity {
         btnOne = (Button) findViewById(R.id.btnOne);
         btnTwo = (Button) findViewById(R.id.btnTwo);
         btnThree = (Button) findViewById(R.id.btnThree);
+        btnFour = (Button) findViewById(R.id.btnFour);
 
         gson = new Gson();
 
@@ -93,14 +94,14 @@ public class MainActivity extends AppCompatActivity {
                     response = makeHttpPostRequest(URLS.get(3), token_only);
                     updateUI("Initial API response: " + response);
 
-                    String needle = getNeedle(response);
+                    String key = getKey(response);
 
                     String[] contents = getConentsOfNestedJSONArray(response);
 
                     // Iterate over data, searching for match
                     int location = 0;
                     for (int i = 0; i < contents.length; ++i) {
-                        if (contents[i].equals(needle)) {
+                        if (contents[i].equals(key)) {
                             location = i;
                             break;
                         }
@@ -110,6 +111,41 @@ public class MainActivity extends AppCompatActivity {
 
                     // Send back needle location and API token
                     response = makeHttpPostRequest(URLS.get(4), gson.toJson(blob));
+
+                } catch (Exception e) {
+                    System.err.print(e.getMessage());
+                }
+                updateUI(response);
+            }
+        });
+
+        btnFour.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String response = "";
+                json_blob blob  = new json_blob(getResources().getString(R.string.token_value));
+                final String token_only = gson.toJson(blob);
+
+                try {
+                    response = makeHttpPostRequest(URLS.get(5), token_only);
+                    updateUI("Initial API response: " + response);
+
+                    String key = getKey(response);
+
+                    String[] contents = getConentsOfNestedJSONArray(response);
+                    ArrayList<String> contentsWithoutPrefix = new ArrayList<String>();
+
+                    for (int i = 0; i < contents.length; ++i) {
+                        if (!contents[i].contains(key)) {
+                            contentsWithoutPrefix.add(contents[i]);
+                        }
+                    }
+
+                    blob  = new json_blob(getResources().getString(R.string.token_value), contentsWithoutPrefix);
+
+                    // Send back needle location and API token
+                    response = makeHttpPostRequest(URLS.get(6), gson.toJson(blob));
 
                 } catch (Exception e) {
                     System.err.print(e.getMessage());
@@ -128,6 +164,9 @@ public class MainActivity extends AppCompatActivity {
         list.add(getResources().getString(R.string.reverse_validate_api_endpoint));
         list.add(getResources().getString(R.string.haystack_api_endpoint));
         list.add(getResources().getString(R.string.haystack_validate_api_endpoint));
+        list.add(getResources().getString(R.string.prefix_api_endpoint));
+        list.add(getResources().getString(R.string.prefix_validate_api_endpoint));
+
     }
 
     public String makeHttpPostRequest(String endPoint, String json) throws IOException {
@@ -146,7 +185,7 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(text);
     }
 
-    public String getNeedle(String JSON) {
+    public String getKey(String JSON) {
         // Match anything inside quotes
         // double escape sequence needed due to Java language, not regex
         String regex = "(?<=\\\").+?(?=\\\")";

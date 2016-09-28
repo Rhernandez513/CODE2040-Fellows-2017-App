@@ -44,5 +44,14 @@
         android:layout_centerHorizontal="true"
         android:layout_marginTop="21dp" />
 
+    <Button
+        android:text="@string/submit_prefix_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnFour"
+        android:layout_below="@+id/btnThree"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="21dp" />
+
 </RelativeLayout>
 
