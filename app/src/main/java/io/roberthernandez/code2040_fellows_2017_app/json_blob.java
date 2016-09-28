@@ -13,6 +13,18 @@ public class json_blob {
     private String needle;
     private ArrayList<String> string_array;
 
+    public String getToken () {
+        return this.token;
+    }
+
+    public String getNeedle() {
+        return this.needle;
+    }
+
+    public ArrayList<String> getString_Array() {
+        return this.string_array;
+    }
+
     public json_blob(String string, ArrayList<String> string_array) {
         this.needle = string;
         this.string_array = string_array;

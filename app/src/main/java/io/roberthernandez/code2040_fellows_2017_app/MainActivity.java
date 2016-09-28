@@ -45,7 +45,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     System.err.print(e.getMessage());
                 }
-                updateResponseBox(response);
+                updateUI(response);
             }
         });
 
@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     response = makeHttpPostRequest(URLS.get(1), token_only);
-                    updateResponseBox(response);
+                    updateUI(response);
 
                     // Reverse string that was sent to us
                     response = new StringBuffer(response).reverse().toString();
@@ -73,7 +73,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     System.err.print(e.getMessage());
                 }
-                updateResponseBox(response);
+                updateUI(response);
             }
         });
 
@@ -88,9 +88,24 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     response = makeHttpPostRequest(URLS.get(3), token_only);
-                    updateResponseBox(response);
+                    updateUI(response);
 
                     // TODO Add actual logic to find the needle in the array by converting JSON to POJO, searching, then back to JSON
+
+                    blob = gson.fromJson(response, json_blob.class);
+
+                    // grab data from POJO
+                    String needle = blob.getNeedle();
+                    ArrayList<String> haystack = blob.getString_Array();
+
+                    // Iterate over data, searching for match
+                    int location = 0;
+                    for (int i = 0; i < haystack.size(); ++i) {
+                        if (haystack.get(i) == needle) {
+                            location = i;
+                            break;
+                        }
+                    }
 
                     // Send back reversed string to validation endpoint
                     response = makeHttpPostRequest(URLS.get(4), gson.toJson(blob));
@@ -98,7 +113,7 @@ public class MainActivity extends AppCompatActivity {
                 } catch (Exception e) {
                     System.err.print(e.getMessage());
                 }
-                updateResponseBox(response);
+                updateUI(response);
             }
         });
     }
@@ -125,7 +140,7 @@ public class MainActivity extends AppCompatActivity {
         return handler.getResponseCode();
 
     }
-    public void updateResponseBox(String text) {
+    public void updateUI(String text) {
         TextView textView = (TextView) findViewById(R.id.responseBox);
         textView.setText(text);
     }
