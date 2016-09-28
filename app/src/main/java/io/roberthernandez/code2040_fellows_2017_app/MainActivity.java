@@ -10,6 +10,8 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<String> URLS = new ArrayList<String>();
@@ -18,16 +20,17 @@ public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
+
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
         populateURLList(URLS);
+
         btnOne = (Button) findViewById(R.id.btnOne);
         btnTwo = (Button) findViewById(R.id.btnTwo);
+        btnThree = (Button) findViewById(R.id.btnThree);
 
         gson = new Gson();
-
-
 
         btnOne.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -88,26 +91,27 @@ public class MainActivity extends AppCompatActivity {
 
                 try {
                     response = makeHttpPostRequest(URLS.get(3), token_only);
-                    updateUI(response);
+                    updateUI("Initial API response: " + response);
 
-                    // TODO Add actual logic to find the needle in the array by converting JSON to POJO, searching, then back to JSON
+                    String[] contents = getConentsOfNestedJSONArray(response);
 
-                    blob = gson.fromJson(response, json_blob.class);
 
-                    // grab data from POJO
-                    String needle = blob.getNeedle();
-                    ArrayList<String> haystack = blob.getString_Array();
+                    // PLACEHOLDER
+                    // TODO Extract Needle value, probably just user matcher.group(1) after matching wildcard values in quotes...
+                    String needle = "";
 
                     // Iterate over data, searching for match
                     int location = 0;
-                    for (int i = 0; i < haystack.size(); ++i) {
-                        if (haystack.get(i) == needle) {
+                    for (int i = 0; i < contents.length; ++i) {
+                        if (contents[i] == needle) {
                             location = i;
                             break;
                         }
                     }
 
-                    // Send back reversed string to validation endpoint
+                    blob  = new json_blob(getResources().getString(R.string.token_value), location);
+
+                    // Send back needle location and API token
                     response = makeHttpPostRequest(URLS.get(4), gson.toJson(blob));
 
                 } catch (Exception e) {
@@ -143,6 +147,30 @@ public class MainActivity extends AppCompatActivity {
     public void updateUI(String text) {
         TextView textView = (TextView) findViewById(R.id.responseBox);
         textView.setText(text);
+    }
+
+    public String[] getConentsOfNestedJSONArray(String JSON) {
+        // Match anything inside square brackets
+        Pattern pattern = Pattern.compile("(?<=\\[).+?(?=\\])");
+        Matcher matcher = pattern.matcher(JSON);
+
+        // Should return the contents of the JSON array with elements encased in
+        // quotes and separated by commas
+        final String result = matcher.find() ? matcher.group(0) : "" ;
+
+        // Remove commas
+        String[] contents = result.split(",");
+
+        // Match anything inside quotes
+        pattern = Pattern.compile("(?<=\").+?(?=\")");
+
+        // Strip quotes from elements
+        for(int i = 0; i < contents.length; ++i) {
+            matcher = pattern.matcher(contents[i]);
+            contents[i] = matcher.find() ? matcher.group(0) : "" ;
+        }
+
+        return contents;
     }
 
 }

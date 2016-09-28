@@ -6,8 +6,8 @@
     <string name="reverse_api_endpoint">http://challenge.code2040.org/api/reverse</string>
     <string name="reverse_validate_api_endpoint">http://challenge.code2040.org/api/reverse/validate</string>
 
-    <string name="haystack_api_endpoint">http://challenge.code2040.org/api/reverse/validate</string>
-    <string name="haystack_validate_api_endpoint">http://challenge.code2040.org/api/reverse/validate</string>
+    <string name="haystack_api_endpoint">http://challenge.code2040.org/api/haystack</string>
+    <string name="haystack_validate_api_endpoint">http://challenge.code2040.org/api/haystack/validate</string>
 
     <!-- Initial Register JSON Blob -->
     <string name="github_url">https://github.com/Rhernandez513/CODE2040-Fellows-2017-App</string>

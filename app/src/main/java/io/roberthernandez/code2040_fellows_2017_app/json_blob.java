@@ -10,29 +10,37 @@ import java.util.ArrayList;
 public class json_blob {
     // Arbitrary field names according to what the API endpoint expects
     private String token;
-    private String needle;
+    private String needleToSearchFor;
     private ArrayList<String> string_array;
+    private int needle;
 
     public String getToken () {
         return this.token;
     }
 
     public String getNeedle() {
-        return this.needle;
+        return this.needleToSearchFor;
     }
 
-    public ArrayList<String> getString_Array() {
-        return this.string_array;
-    }
+    public ArrayList<String> getString_Array() { return this.string_array; }
+
+    // Gson Best practices
+    public json_blob() { }
 
     public json_blob(String string, ArrayList<String> string_array) {
-        this.needle = string;
+        this.needleToSearchFor = string;
         this.string_array = string_array;
     }
 
-    public json_blob(String token, String needle) {
+    public json_blob(String token, int location) {
         this.token = token;
-        this.needle = needle;
+        this.needle = location;
     }
+
+    public json_blob(String token, String needleToSearchFor) {
+        this.token = token;
+        this.needleToSearchFor = needleToSearchFor;
+    }
+
     public json_blob(String token) { this.token = token; }
 }
