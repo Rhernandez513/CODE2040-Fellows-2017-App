@@ -93,17 +93,14 @@ public class MainActivity extends AppCompatActivity {
                     response = makeHttpPostRequest(URLS.get(3), token_only);
                     updateUI("Initial API response: " + response);
 
+                    String needle = getNeedle(response);
+
                     String[] contents = getConentsOfNestedJSONArray(response);
-
-
-                    // PLACEHOLDER
-                    // TODO Extract Needle value, probably just user matcher.group(1) after matching wildcard values in quotes...
-                    String needle = "";
 
                     // Iterate over data, searching for match
                     int location = 0;
                     for (int i = 0; i < contents.length; ++i) {
-                        if (contents[i] == needle) {
+                        if (contents[i].equals(needle)) {
                             location = i;
                             break;
                         }
@@ -147,6 +144,25 @@ public class MainActivity extends AppCompatActivity {
     public void updateUI(String text) {
         TextView textView = (TextView) findViewById(R.id.responseBox);
         textView.setText(text);
+    }
+
+    public String getNeedle(String JSON) {
+        // Match anything inside quotes
+        // double escape sequence needed due to Java language, not regex
+        String regex = "(?<=\\\").+?(?=\\\")";
+        Pattern pattern = Pattern.compile(regex);
+        Matcher matcher = pattern.matcher(JSON);
+
+        // Should return the value of needle inside the JSON Dict
+        // This is not an extensible solution, but we know that the needle
+        // is the first key, value paid inside the dictionary
+        // The regex finds anything inside quotes, but doesn't discriminate on quote pairs
+        // that were already matched, e.g. the second match is actually the first colon, not
+        // the needle that a human would expect
+        matcher.find();
+        matcher.find();
+        return matcher.find() ? matcher.group(0) : "" ;
+
     }
 
     public String[] getConentsOfNestedJSONArray(String JSON) {
