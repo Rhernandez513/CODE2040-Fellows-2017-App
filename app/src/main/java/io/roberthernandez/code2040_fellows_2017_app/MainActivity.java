@@ -30,6 +30,7 @@ public class MainActivity extends AppCompatActivity {
         btnTwo = (Button) findViewById(R.id.btnTwo);
         btnThree = (Button) findViewById(R.id.btnThree);
         btnFour = (Button) findViewById(R.id.btnFour);
+        btnFive = (Button) findViewById(R.id.btnFour);
 
         gson = new Gson();
 
@@ -163,14 +164,14 @@ public class MainActivity extends AppCompatActivity {
                 final String token_only = gson.toJson(blob);
 
                 try {
-                    response = makeHttpPostRequest(URLS.get(5), token_only);
+                    response = makeHttpPostRequest(URLS.get(7), token_only);
                     updateUI("Initial API response: " + response);
 
                     String key = getKey(response);
 
                     // TODO "meat and potatoes" logic
 
-                    response = makeHttpPostRequest(URLS.get(6), gson.toJson(blob));
+                    response = makeHttpPostRequest(URLS.get(8), gson.toJson(blob));
 
                 } catch (Exception e) {
                     System.err.print(e.getMessage());
