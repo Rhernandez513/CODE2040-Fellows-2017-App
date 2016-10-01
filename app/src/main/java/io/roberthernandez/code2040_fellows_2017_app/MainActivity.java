@@ -10,6 +10,7 @@ import com.google.gson.Gson;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -30,7 +31,7 @@ public class MainActivity extends AppCompatActivity {
         btnTwo = (Button) findViewById(R.id.btnTwo);
         btnThree = (Button) findViewById(R.id.btnThree);
         btnFour = (Button) findViewById(R.id.btnFour);
-        btnFive = (Button) findViewById(R.id.btnFour);
+        btnFive = (Button) findViewById(R.id.btnFive);
 
         gson = new Gson();
 
@@ -95,7 +96,7 @@ public class MainActivity extends AppCompatActivity {
                     response = makeHttpPostRequest(URLS.get(3), token_only);
                     updateUI("Initial API response: " + response);
 
-                    String key = getKey(response);
+                    String key = getKey(response, 1);
 
                     String[] contents = getConentsOfNestedJSONArray(response);
 
@@ -132,7 +133,7 @@ public class MainActivity extends AppCompatActivity {
                     response = makeHttpPostRequest(URLS.get(5), token_only);
                     updateUI("Initial API response: " + response);
 
-                    String key = getKey(response);
+                    String key = getKey(response, 1);
 
                     String[] contents = getConentsOfNestedJSONArray(response);
                     ArrayList<String> contentsWithoutPrefix = new ArrayList<String>();
@@ -167,11 +168,30 @@ public class MainActivity extends AppCompatActivity {
                     response = makeHttpPostRequest(URLS.get(7), token_only);
                     updateUI("Initial API response: " + response);
 
-                    String key = getKey(response);
+                    // Should be the value corresponding to "datestamp" in the JSON
+                    final String datestamp = getKey(response, 1);
 
-                    // TODO "meat and potatoes" logic
+                    final json_blob newblob = gson.fromJson(response, json_blob.class);
 
-                    response = makeHttpPostRequest(URLS.get(8), gson.toJson(blob));
+                    final int interval = newblob.getInterval();
+
+                    final ISO8601DateParser parser = new ISO8601DateParser();
+
+                    final Date date = ISO8601DateParser.parse(datestamp);
+
+                    long time = date.getTime();
+                    time += interval;
+                    date.setTime(time);
+
+                    // TODO this is just added to make it easy to jump to string comparisons during debugging
+                    // TODO actually write some code to construct a ISO8601 date
+                    if (datestamp != date.toString()) {
+                        throw new Exception();
+                    }
+
+                    final json_blob third_blob = new json_blob(getResources().getString(R.string.token_value), ISO8601DateParser.toString(date));
+
+                    response = makeHttpPostRequest(URLS.get(8), gson.toJson(third_blob));
 
                 } catch (Exception e) {
                     System.err.print(e.getMessage());
@@ -212,21 +232,20 @@ public class MainActivity extends AppCompatActivity {
         textView.setText(text);
     }
 
-    public String getKey(String JSON) {
+    public String getKey(String JSON, int position) {
         // Match anything inside quotes
         // double escape sequence needed due to Java language, not regex
         String regex = "(?<=\\\").+?(?=\\\")";
         Pattern pattern = Pattern.compile(regex);
         Matcher matcher = pattern.matcher(JSON);
 
-        // Should return the value of needle inside the JSON Dict
-        // This is not an extensible solution, but we know that the needle
-        // is the first key, value paid inside the dictionary
-        // The regex finds anything inside quotes, but doesn't discriminate on quote pairs
-        // that were already matched, e.g. the second match is actually the first colon, not
-        // the needle that a human would expect
-        matcher.find();
-        matcher.find();
+        // should provide *really basic* ability to specify where in the JSON you want to
+        // get the key out of, i'm sure mixed types will break this
+        // negative 1 value in case someone wants to specific the first object with a 0
+        // as programmers tend to do
+        for (int i = -1; i < position; ++i) {
+            matcher.find();
+        }
         return matcher.find() ? matcher.group(0) : "" ;
 
     }

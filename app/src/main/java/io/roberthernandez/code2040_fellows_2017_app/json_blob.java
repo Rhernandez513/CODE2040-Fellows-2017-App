@@ -12,8 +12,11 @@ public class json_blob {
     private String token;
     private String needleToSearchFor;
     private String datestamp;
+    private Integer interval;
     private ArrayList<String> array;
     private int needle;
+
+    public Integer getInterval() { return this.interval; }
 
     public String getToken () {
         return this.token;
@@ -38,9 +41,9 @@ public class json_blob {
         this.needle = location;
     }
 
-    public json_blob(String token, String needleToSearchFor) {
+    public json_blob(String token, String datestamp) {
         this.token = token;
-        this.needleToSearchFor = needleToSearchFor;
+        this.datestamp = datestamp;
     }
 
     public json_blob(String token) { this.token = token; }

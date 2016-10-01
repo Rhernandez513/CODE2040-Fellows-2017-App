@@ -50,17 +50,18 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnOne"
+        android:layout_marginTop="99dp"
         android:layout_below="@+id/responseBox"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="137dp" />
+        android:layout_centerHorizontal="true" />
 
     <Button
         android:text="@string/submit_date_time_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:id="@+id/btnFive"
-        android:layout_alignParentBottom="true"
-        android:layout_alignEnd="@+id/btnThree" />
+        android:layout_below="@+id/btnFour"
+        android:layout_alignStart="@+id/btnThree"
+        android:layout_marginTop="23dp" />
 
 </RelativeLayout>
 
