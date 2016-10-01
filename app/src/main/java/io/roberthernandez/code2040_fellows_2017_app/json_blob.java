@@ -11,6 +11,7 @@ public class json_blob {
     // Arbitrary field names according to what the API endpoint expects
     private String token;
     private String needleToSearchFor;
+    private String datestamp;
     private ArrayList<String> array;
     private int needle;
 

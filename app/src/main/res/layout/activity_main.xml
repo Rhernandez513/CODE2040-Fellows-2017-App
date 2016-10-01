@@ -19,14 +19,6 @@
         android:layout_alignParentStart="true" />
 
     <Button
-        android:text="@string/submit_post"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_centerHorizontal="true"
-        android:id="@+id/btnOne" />
-
-    <Button
         android:text="@string/submit_reverse_post"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -52,6 +44,23 @@
         android:layout_below="@+id/btnThree"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="21dp" />
+
+    <Button
+        android:text="@string/submit_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnOne"
+        android:layout_below="@+id/responseBox"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="137dp" />
+
+    <Button
+        android:text="@string/submit_date_time_post"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:id="@+id/btnFive"
+        android:layout_alignParentBottom="true"
+        android:layout_alignEnd="@+id/btnThree" />
 
 </RelativeLayout>
 

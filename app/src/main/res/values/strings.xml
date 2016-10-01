@@ -9,6 +9,8 @@
     <string name="haystack_validate_api_endpoint">http://challenge.code2040.org/api/haystack/validate</string>
     <string name="prefix_api_endpoint">http://challenge.code2040.org/api/prefix</string>
     <string name="prefix_validate_api_endpoint">http://challenge.code2040.org/api/prefix/validate</string>
+    <string name="date_time_api_endpoint">http://challenge.code2040.org/api/dating</string>
+    <string name="date_time_validate_api_endpoint">http://challenge.code2040.org/api/dating/validate</string>
 
     <!-- Initial Register JSON Blob -->
     <string name="github_url">https://github.com/Rhernandez513/CODE2040-Fellows-2017-App</string>
@@ -21,5 +23,7 @@
     <string name="submit_haystack_post">Click to Submit Haystack Post</string>
 
     <string name="submit_prefix_post">Click to Submit Prefix Post</string>
+    <string name="submit_date_time_post">Click to Submit Date Time Post</string>
+
 
 </resources>

@@ -15,7 +15,7 @@ import java.util.regex.Pattern;
 
 public class MainActivity extends AppCompatActivity {
     private ArrayList<String> URLS = new ArrayList<String>();
-    private Button btnOne, btnTwo, btnThree, btnFour;
+    private Button btnOne, btnTwo, btnThree, btnFour, btnFive;
     private static Gson gson;
 
     @Override
@@ -153,6 +153,31 @@ public class MainActivity extends AppCompatActivity {
                 updateUI(response);
             }
         });
+
+        btnFive.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+                String response = "";
+                json_blob blob  = new json_blob(getResources().getString(R.string.token_value));
+                final String token_only = gson.toJson(blob);
+
+                try {
+                    response = makeHttpPostRequest(URLS.get(5), token_only);
+                    updateUI("Initial API response: " + response);
+
+                    String key = getKey(response);
+
+                    // TODO "meat and potatoes" logic
+
+                    response = makeHttpPostRequest(URLS.get(6), gson.toJson(blob));
+
+                } catch (Exception e) {
+                    System.err.print(e.getMessage());
+                }
+                updateUI(response);
+            }
+        });
     }
 
     public void populateURLList(ArrayList<String> list) {
@@ -166,7 +191,8 @@ public class MainActivity extends AppCompatActivity {
         list.add(getResources().getString(R.string.haystack_validate_api_endpoint));
         list.add(getResources().getString(R.string.prefix_api_endpoint));
         list.add(getResources().getString(R.string.prefix_validate_api_endpoint));
-
+        list.add(getResources().getString(R.string.date_time_api_endpoint));
+        list.add(getResources().getString(R.string.date_time_validate_api_endpoint));
     }
 
     public String makeHttpPostRequest(String endPoint, String json) throws IOException {
