@@ -14,7 +14,7 @@ public class json_blob {
     private String datestamp;
     private Integer interval;
     private ArrayList<String> array;
-    private int needle;
+    private Integer needle;
 
     public Integer getInterval() { return this.interval; }
 
